@@ -35,17 +35,16 @@
     `
   }
 
-  function RawLimit(timeSaved, frequency, timePeriodInDays) {
-    const threshold = (frequency * timePeriodInDays) * timeSaved;
+  function RawLimit(timeSaved, frequency, timePeriodInDays, peopleAffected) {
+    const threshold = (frequency * timePeriodInDays) * timeSaved * peopleAffected;
     return FormatTime(threshold, timePeriodInDays * 86400)
   }
 
   function FormatTime(duration, timePeriodInSeconds) {
-    console.log("timePeriod, duration, ", timePeriodInSeconds + 2, duration)
     if (Math.abs(timePeriodInSeconds - duration) < 0.01) {
       return "=="
     }
-    if (timePeriodInSeconds - 2 < duration) {
+    if (timePeriodInSeconds < duration) {
       return "N/A"
     }
     if (duration < 60) {
@@ -72,18 +71,19 @@
     return html`
       <tr>
         <td>${props.label}</td>
-        <td>${RawLimit(Number(props.count),50, props.days)}</td>
-        <td>${RawLimit(Number(props.count), 5, props.days)}</td>
-        <td>${RawLimit(Number(props.count), 1, props.days)}</td>
-        <td>${RawLimit(Number(props.count), 1/7, props.days)}</td>
-        <td>${RawLimit(Number(props.count), 1/30.5, props.days)}</td>
-        <td>${RawLimit(Number(props.count), 1/365, props.days)}</td>
+        <td>${RawLimit(Number(props.count),50, props.days, props.peopleAffected)}</td>
+        <td>${RawLimit(Number(props.count), 5, props.days, props.peopleAffected)}</td>
+        <td>${RawLimit(Number(props.count), 1, props.days, props.peopleAffected)}</td>
+        <td>${RawLimit(Number(props.count), 1/7, props.days, props.peopleAffected)}</td>
+        <td>${RawLimit(Number(props.count), 1/30.5, props.days, props.peopleAffected)}</td>
+        <td>${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td>
       </tr>
     `
   }
 
   function Table (props) {
     const days = 30.5 * 60;
+    const peopleAffected = 1;
     return html`
       <table>
         <thead>
@@ -96,16 +96,16 @@
           <th>Yearly</th>
         </thead>
         <tbody>
-          <${ThingRow} label="1 second" count="1" days=${days}/>
-          <${ThingRow} label="5 seconds" count="5" days=${days}/>
-          <${ThingRow} label="30 seconds" count="30" days=${days}/>
-          <${ThingRow} label="1 minute" count="60" days=${days}/>
-          <${ThingRow} label="5 minutes" count="150" days=${days}/>
-          <${ThingRow} label="30 minutes" count="1800" days=${days}/>
-          <${ThingRow} label="1 hour" count="3600" days=${days}/>
-          <${ThingRow} label="6 hours" count="21600" days=${days}/>
-          <${ThingRow} label="1 day" count="86400" days=${days}/>
-          <${ThingRow} label="1 week" count="604800" days=${days}/>
+          <${ThingRow} label="1 second" count="1" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="5 seconds" count="5" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="30 seconds" count="30" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="1 minute" count="60" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="5 minutes" count="150" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="30 minutes" count="1800" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="1 hour" count="3600" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="6 hours" count="21600" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="1 day" count="86400" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="1 week" count="604800" days=${days} peopleAffected=${peopleAffected}/>
         </tbody>
       </table>
 
