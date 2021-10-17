@@ -1,0 +1,126 @@
+<script type="module">
+  import { h, Component, render } from 'https://unpkg.com/preact?module';
+  import htm from 'https://unpkg.com/htm?module';
+
+  // Initialize htm with Preact
+  const html = htm.bind(h);
+
+  function Form (props) {
+    return html`
+    <form>
+      <div>
+        <label>Time window</label>
+        <select>
+          <option value="3">3 months</option>
+          <option value="6">6 months</option>
+          <option value="9">9 months</option>
+          <option value="12">1 year</option>
+          <option value="18">1.5 years</option>
+          <option value="24">2 years</option>
+          <option value="36">3 years</option>
+          <option value="48">4 years</option>
+          <option value="60" selected>5 years</option>
+          <option value="72">6 years</option>
+          <option value="84">7 years</option>
+          <option value="96">8 years</option>
+          <option value="108">9 years</option>
+          <option value="120">10 years</option>
+        </select>
+      </div>
+      <div>
+        <label># of people impacted: </label>
+        <input type="number" name="peopleAffected" value="1" />
+      </div>
+    </form>
+    `
+  }
+
+  function RawLimit(timeSaved, frequency, timePeriodInDays) {
+    const threshold = (frequency * timePeriodInDays) * timeSaved;
+    return FormatTime(threshold, timePeriodInDays * 86400)
+  }
+
+  function FormatTime(duration, timePeriodInSeconds) {
+    console.log("timePeriod, duration, ", timePeriodInSeconds + 2, duration)
+    if (Math.abs(timePeriodInSeconds - duration) < 0.01) {
+      return "=="
+    }
+    if (timePeriodInSeconds - 2 < duration) {
+      return "N/A"
+    }
+    if (duration < 60) {
+      return duration.toFixed(1) + " seconds"
+    }
+    else if (duration <= 3600) {
+      return (duration/60).toFixed(1) + " minutes"
+    }
+    else if (duration <= 86400 ) {
+      return (duration/3600).toFixed(1) + " hours"
+    }
+    else if (duration <= 604800 ) {
+      return (duration/86400).toFixed(1) + " days"
+    }
+    else if (duration <= 2635200) {
+      return (duration/604800).toFixed(1) + " weeks"
+    }
+    else {
+      return (duration/2635200).toFixed(1) + " months"
+    }
+  }
+
+  function ThingRow (props) {
+    return html`
+      <tr>
+        <td>${props.label}</td>
+        <td>${RawLimit(Number(props.count),50, props.days)}</td>
+        <td>${RawLimit(Number(props.count), 5, props.days)}</td>
+        <td>${RawLimit(Number(props.count), 1, props.days)}</td>
+        <td>${RawLimit(Number(props.count), 1/7, props.days)}</td>
+        <td>${RawLimit(Number(props.count), 1/30.5, props.days)}</td>
+        <td>${RawLimit(Number(props.count), 1/365, props.days)}</td>
+      </tr>
+    `
+  }
+
+  function Table (props) {
+    const days = 30.5 * 60;
+    return html`
+      <table>
+        <thead>
+          <th>   </th>
+          <th>50/Day</th>
+          <th>5/Day</th>
+          <th>Daily</th>
+          <th>Weekly</th>
+          <th>Monthly</th>
+          <th>Yearly</th>
+        </thead>
+        <tbody>
+          <${ThingRow} label="1 second" count="1" days=${days}/>
+          <${ThingRow} label="5 seconds" count="5" days=${days}/>
+          <${ThingRow} label="30 seconds" count="30" days=${days}/>
+          <${ThingRow} label="1 minute" count="60" days=${days}/>
+          <${ThingRow} label="5 minutes" count="150" days=${days}/>
+          <${ThingRow} label="30 minutes" count="1800" days=${days}/>
+          <${ThingRow} label="1 hour" count="3600" days=${days}/>
+          <${ThingRow} label="6 hours" count="21600" days=${days}/>
+          <${ThingRow} label="1 day" count="86400" days=${days}/>
+          <${ThingRow} label="1 week" count="604800" days=${days}/>
+        </tbody>
+      </table>
+
+    `
+  }
+
+  function Whoa (props) {
+    return html`<div class="bg-blue-200">Hello ${props.name}</div>`;
+  }
+  
+  const app = html`
+  <div>
+    <${Form} />
+    <${Table} />
+  </div>
+  `;
+  render(app, document.querySelector("#app-area"));
+</script>

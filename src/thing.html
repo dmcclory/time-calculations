@@ -1,0 +1,29 @@
+
+<div id="area-1">
+      <p>area 1</p>
+    </div>
+    <div id="area-2">
+      <p>area 2</p>
+    </div>
+    
+    
+    <script type="module">
+      import { h, Component, render } from 'https://unpkg.com/preact?module';
+      import htm from 'https://unpkg.com/htm?module';
+
+      
+      // Initialize htm with Preact
+      const html = htm.bind(h);
+
+      function Whoa (props) {
+        return html`<h1>Hello ${props.name}</h1>`;
+      }
+      
+      const app = html`<ol>
+        <li><${Whoa} name="Nate" /></li>
+        <li><${Whoa} name="Doug" /></li>
+        <li><${Whoa} name="Iron Man" /></li>
+      </ol>`;
+      render(app, document.querySelector("#area-2"));
+    </script>
+</div>
