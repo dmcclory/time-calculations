@@ -3,31 +3,29 @@
 
   function Form (props) {
     return html`
-    <form>
       <div>
         <label>Time window</label>
-        <select>
-          <option value="3">3 months</option>
-          <option value="6">6 months</option>
-          <option value="9">9 months</option>
-          <option value="12">1 year</option>
-          <option value="18">1.5 years</option>
-          <option value="24">2 years</option>
-          <option value="36">3 years</option>
-          <option value="48">4 years</option>
-          <option value="60" selected>5 years</option>
-          <option value="72">6 years</option>
-          <option value="84">7 years</option>
-          <option value="96">8 years</option>
-          <option value="108">9 years</option>
-          <option value="120">10 years</option>
+        <select value=${props.days} onChange=${props.updateTimeInterval}>
+          <option value="91.5">3 months</option>
+          <option value="183">6 months</option>
+          <option value="274.5">9 months</option>
+          <option value="366">1 year</option>
+          <option value="549">1.5 years</option>
+          <option value="732">2 years</option>
+          <option value="1098">3 years</option>
+          <option value="1464">4 years</option>
+          <option value="1830" selected>5 years</option>
+          <option value="2196">6 years</option>
+          <option value="2562">7 years</option>
+          <option value="2928">8 years</option>
+          <option value="3294">9 years</option>
+          <option value="3660">10 years</option>
         </select>
       </div>
       <div>
         <label># of people impacted: </label>
-        <input type="number" name="peopleAffected" value="1" />
+        <input type="number" name="peopleAffected" value=${props.peopleAffected} min="1" onChange=${props.updatePeopleAffected} />
       </div>
-    </form>
     `
   }
 
@@ -65,23 +63,21 @@
 
   function ThingRow (props) {
     return html`
-      <tr>
-        <td>${props.label}</td>
-        <td>${RawLimit(Number(props.count),50, props.days, props.peopleAffected)}</td>
-        <td>${RawLimit(Number(props.count), 5, props.days, props.peopleAffected)}</td>
-        <td>${RawLimit(Number(props.count), 1, props.days, props.peopleAffected)}</td>
-        <td>${RawLimit(Number(props.count), 1/7, props.days, props.peopleAffected)}</td>
-        <td>${RawLimit(Number(props.count), 1/30.5, props.days, props.peopleAffected)}</td>
-        <td>${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td>
+      <tr class="border border-solid-black">
+        <td class="border border-solid-black">${props.label}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count),50, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count), 5, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count), 1, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/7, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/30.5, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td>
       </tr>
     `
   }
 
   function Table (props) {
-    const days = 30.5 * 60;
-    const peopleAffected = 1;
     return html`
-      <table>
+      <table class="border border-solid-black bg-white mt-4">
         <thead>
           <th>   </th>
           <th>50/Day</th>
@@ -92,16 +88,16 @@
           <th>Yearly</th>
         </thead>
         <tbody>
-          <${ThingRow} label="1 second" count="1" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="5 seconds" count="5" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="30 seconds" count="30" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="1 minute" count="60" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="5 minutes" count="150" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="30 minutes" count="1800" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="1 hour" count="3600" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="6 hours" count="21600" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="1 day" count="86400" days=${days} peopleAffected=${peopleAffected}/>
-          <${ThingRow} label="1 week" count="604800" days=${days} peopleAffected=${peopleAffected}/>
+          <${ThingRow} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="5 seconds" count="5" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="30 seconds" count="30" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="1 minute" count="60" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="5 minutes" count="150" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="30 minutes" count="1800" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="1 hour" count="3600" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="6 hours" count="21600" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="1 day" count="86400" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${ThingRow} label="1 week" count="604800" days=${props.days} peopleAffected=${props.peopleAffected}/>
         </tbody>
       </table>
 
@@ -111,12 +107,34 @@
   function Whoa (props) {
     return html`<div class="bg-blue-200">Hello ${props.name}</div>`;
   }
-  
+
+  function Main (props) {
+    const nice = 30.5 * 12;
+    const [ days, setDays ] = useState(30.5 * 12);
+    const [ peopleAffected, setPeopleAffected ] = useState(1)
+    console.log("people affected: ", peopleAffected)
+
+    const updatePeopleAffected = useCallback( (e) => {
+      setPeopleAffected(e.target.value)
+    }, [peopleAffected, setPeopleAffected])
+
+    const updateTimeInterval = useCallback( (e) => {
+      console.log(e);
+      setDays(e.target.value)
+    }, [days, setDays])
+
+    return html`
+    <div>
+      <${Form} updateTimeInterval=${updateTimeInterval} days=${days} updatePeopleAffected=${updatePeopleAffected} peopleAffected=${peopleAffected} />
+      <${Table} peopleAffected=${peopleAffected} days=${days} />
+    </div>
+    `;
+
+  }
+
   const app = html`
-  <div>
-    <${Form} />
-    <${Table} />
-  </div>
-  `;
+    <${Main} />
+  `
+
   render(app, document.querySelector("#app-area"));
 </script>
