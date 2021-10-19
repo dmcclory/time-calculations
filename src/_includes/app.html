@@ -42,30 +42,39 @@
     `
   }
 
-  function FormatTime(duration, timePeriodInSeconds) {
+  const timeCellLabels = {
+      seconds: {large: "seconds", small: "s"},
+      minutes: {large: "mins", small: "m"},
+      hours: {large: "hours", small: "h"},
+      days: {large: "days", small: "D"},
+      weeks: {large: "weeks", small: "W"},
+      months: {large: "months", small: "M"}
+  }
+
+  function roundToLargestTimeUnit(duration, timePeriodInSeconds) {
     if (Math.abs(timePeriodInSeconds - duration) < 0.01) {
-      return "=="
+      return {duration: "=="}
     }
     if (timePeriodInSeconds < duration) {
-      return "N/A"
+      return {duration: "N/A"}
     }
     if (duration < 60) {
-      return [duration.toFixed(1), "seconds", "s"]
+      return {duration: duration.toFixed(1), ...timeCellLabels.seconds}
     }
     else if (duration <= 3600) {
-      return [(duration/60).toFixed(1), "mins", "m"]
+      return {duration: (duration/60).toFixed(1), ...timeCellLabels.minutes}
     }
     else if (duration <= 86400 ) {
-      return [(duration/3600).toFixed(1), "hours", "h"]
+      return {duration: (duration/3600).toFixed(1), ...timeCellLabels.hours}
     }
     else if (duration <= 604800 ) {
-      return [(duration/86400).toFixed(1), "days", "D"]
+      return {duration: (duration/86400).toFixed(1), ...timeCellLabels.days}
     }
     else if (duration <= 2635200) {
-      return [(duration/604800).toFixed(1), "weeks", "M"]
+      return {duration: (duration/604800).toFixed(1), ...timeCellLabels.weeks}
     }
     else {
-      return [(duration/2635200).toFixed(1), "months", "M"]
+      return {duration: (duration/2635200).toFixed(1), ...timeCellLabels.months}
     }
   }
 
@@ -85,7 +94,7 @@
 
   function Table (props) {
     return html`
-      <table class="border border-solid-black bg-white mt-4">
+      <table class="border border-solid-black bg-white mt-4 md:w-6/12">
         <thead>
           <th>   </th>
           <th>50/Day</th>
