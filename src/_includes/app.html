@@ -29,9 +29,17 @@
     `
   }
 
-  function RawLimit(timeSaved, frequency, timePeriodInDays, peopleAffected) {
-    const threshold = (frequency * timePeriodInDays) * timeSaved * peopleAffected;
-    return FormatTime(threshold, timePeriodInDays * 86400)
+  function RawLimit(props) {
+    const threshold = (props.frequency * props.timePeriodInDays) * props.timeSaved * props.peopleAffected;
+    const [duration, mediumText, smallText] = FormatTime(threshold, props.timePeriodInDays * 86400)
+
+    return html`
+      <div class="$classNames">
+        ${duration}
+        <span class="visible md:hidden"> ${small}</span>
+        <span class="hidden md:table-cell"> ${large}</span>
+      </div>
+    `
   }
 
   function FormatTime(duration, timePeriodInSeconds) {
@@ -42,22 +50,22 @@
       return "N/A"
     }
     if (duration < 60) {
-      return duration.toFixed(1) + " seconds"
+      return [duration.toFixed(1), "seconds", "s"]
     }
     else if (duration <= 3600) {
-      return (duration/60).toFixed(1) + " mins"
+      return [(duration/60).toFixed(1), "mins", "m"]
     }
     else if (duration <= 86400 ) {
-      return (duration/3600).toFixed(1) + " hrs"
+      return [(duration/3600).toFixed(1), "hours", "h"]
     }
     else if (duration <= 604800 ) {
-      return (duration/86400).toFixed(1) + " days"
+      return [(duration/86400).toFixed(1), "days", "D"]
     }
     else if (duration <= 2635200) {
-      return (duration/604800).toFixed(1) + " weeks"
+      return [(duration/604800).toFixed(1), "weeks", "M"]
     }
     else {
-      return (duration/2635200).toFixed(1) + " months"
+      return [(duration/2635200).toFixed(1), "months", "M"]
     }
   }
 
@@ -65,12 +73,12 @@
     return html`
       <tr class="border border-solid-black">
         <td class="border border-solid-black">${props.label}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count),50, props.days, props.peopleAffected)}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count), 5, props.days, props.peopleAffected)}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count), 1, props.days, props.peopleAffected)}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/7, props.days, props.peopleAffected)}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/30.5, props.days, props.peopleAffected)}</td>
-        <td class="border border-solid-black">${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td>
+        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${50} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${5} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/7} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/30.5}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td class="border border-solid-black hidden md:table-cell"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/365}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
       </tr>
     `
   }
@@ -85,7 +93,7 @@
           <th>Daily</th>
           <th>Weekly</th>
           <th>Monthly</th>
-          <th>Yearly</th>
+          <th class="hidden md:table-cell">Yearly</th>
         </thead>
         <tbody>
           <${ThingRow} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected}/>
@@ -138,3 +146,4 @@
 
   render(app, document.querySelector("#app-area"));
 </script>
+        <!-- <td class="border border-solid-black hidden md:visible">${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td> -->
