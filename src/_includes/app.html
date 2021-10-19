@@ -31,7 +31,7 @@
 
   function RawLimit(props) {
     const threshold = (props.frequency * props.timePeriodInDays) * props.timeSaved * props.peopleAffected;
-    const [duration, mediumText, smallText] = FormatTime(threshold, props.timePeriodInDays * 86400)
+    const {duration, large, small} = roundToLargestTimeUnit(threshold, props.timePeriodInDays * 86400 * props.peopleAffected)
 
     return html`
       <div class="$classNames">
