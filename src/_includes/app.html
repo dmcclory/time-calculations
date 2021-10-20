@@ -34,17 +34,17 @@
     const {duration, large, small} = roundToLargestTimeUnit(threshold, props.timePeriodInDays * 86400 * props.peopleAffected)
 
     return html`
-      <div class="$classNames">
+      <div class="$classNames text-center md:flex md:flex-col">
         ${duration}
-        <span class="visible md:hidden"> ${small}</span>
-        <span class="hidden md:table-cell"> ${large}</span>
+        <span class="visible md:hidden text-sm text-center"> ${small}</span>
+        <span class="hidden md:table-cell text-sm text-center max-w-full"> ${large}</span>
       </div>
     `
   }
 
   const timeCellLabels = {
       seconds: {large: "seconds", small: "s"},
-      minutes: {large: "mins", small: "m"},
+      minutes: {large: "minutes", small: "m"},
       hours: {large: "hours", small: "h"},
       days: {large: "days", small: "D"},
       weeks: {large: "weeks", small: "W"},
@@ -94,7 +94,7 @@
 
   function Table (props) {
     return html`
-      <table class="border border-solid-black bg-white mt-4 md:w-6/12">
+      <table class="border border-solid-black bg-white mt-4 w-full md:w-6/12">
         <thead>
           <th>   </th>
           <th>50/Day</th>
