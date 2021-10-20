@@ -129,14 +129,12 @@
     const nice = 30.5 * 12;
     const [ days, setDays ] = useState(30.5 * 12);
     const [ peopleAffected, setPeopleAffected ] = useState(1)
-    console.log("people affected: ", peopleAffected)
 
     const updatePeopleAffected = useCallback( (e) => {
       setPeopleAffected(e.target.value)
     }, [peopleAffected, setPeopleAffected])
 
     const updateTimeInterval = useCallback( (e) => {
-      console.log(e);
       setDays(e.target.value)
     }, [days, setDays])
 
@@ -155,4 +153,3 @@
 
   render(app, document.querySelector("#app-area"));
 </script>
-        <!-- <td class="border border-solid-black hidden md:visible">${RawLimit(Number(props.count), 1/365, props.days, props.peopleAffected)}</td> -->
