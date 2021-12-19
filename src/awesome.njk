@@ -2,27 +2,28 @@
 layout: base.njk
 ---
 
-<header class="bg-green-800 text-white text-2xl">
+<header class="bg-green-800 text-white text-2xl px-4 md:text-3xl">
   TimeCalculations.net
 </header>
-<div class="bg-green-100">
-  <div class="mb-4 pt-8">
-    <p> how long you can work on making a routine more efficient before you you're spending more time than you save?<p>
+<div class="flex flex-col items-center">
+  <div class="mb-4 pt-8 md:w-6/12 bg-green-100">
+    <p class="text-left">If you want to make a process more efficient, you can only work on it for so long before you end spending more time than you save.<p>
+    <ol class="mt-2 mx-4">
+      <li>The columns: show many times a day/week/month you need to do the task.<li>
+      <li>The rows: if you can save an amount of time per task<li>
+      <li>The cells: shows you the cutoff point.<li>
+    </ol>
   </div>
 
-  <div id="app-area" class="my-8">
+  <div id="app-area" class="my-8 bg-green-100">
   </div>
 
-  <div class="mt-4">
-    <p> the columns - how often you do the task  <p>
-    <p> the rows - how much time you'll save<p>
-    <p> the cells - the limit where, if you get any larger you'll start wasting time.<p>
+  <div class="mt-4 bg-green-100">
+    <p>This is based on the classic <a href="https://xkcd.com/1205/">XKCD comic.</a> The original comic is <i>great</i>, but it has one glaring problem - it's stuck at 5 years, which is an impractically long time span.<p>
   </div>
-
-  <p>This is based on the classic <a href="https://xkcd.com/1205/">XKCD comic.</a> The original comic is <i>great</i>, but it has one glaring problem - it's stuck at 5 years, which is an impractically long time span.<p>
 </div>
 
-<footer>
+<footer class="hidden">
   <p>I'm some footer content</p>
 </footer>
 {% include "app.html" %}
