@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     {% include "head.njk" %}
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
     {% if site.env %}
       <!-- capture the CSS content as a Liquid variable -->
       {% set css %}{% include "styles.min.css" %}{% endset %}
-      <style> 
+      <style>
         {{ css | safe }}
       </style>
     {% else %}

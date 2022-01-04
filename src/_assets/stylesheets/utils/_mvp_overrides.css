@@ -1,0 +1,26 @@
+:root {
+  --active-brightness: 0.85;
+  --border-radius: 5px;
+  --box-shadow: 2px 2px 10px;
+}
+
+nav {
+  margin-bottom: unset;
+}
+
+section aside {
+   width: var(--width-card-wide);
+}
+
+
+@media (max-width: 600px) {
+  header {
+    padding: 0rem 1rem;
+  }
+
+  section.app-area {
+    display: block;
+    flex-wrap: unset;
+    justify-content: unset;
+  }
+}
