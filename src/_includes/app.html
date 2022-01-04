@@ -29,15 +29,13 @@
     `
   }
 
-  function RawLimit(props) {
+  function Cell(props) {
     const threshold = (props.frequency * props.timePeriodInDays) * props.timeSaved * props.peopleAffected;
     const {duration, large, small} = roundToLargestTimeUnit(threshold, props.timePeriodInDays * 86400 * props.peopleAffected)
 
     return html`
-      <div class="$classNames text-center md:flex md:flex-col">
-        ${duration}
-        <span class="visible md:hidden text-sm text-center"> ${small}</span>
-        <span class="hidden md:table-cell text-sm text-center max-w-full"> ${large}</span>
+      <div>
+        ${duration} ${large}
       </div>
     `
   }
@@ -78,23 +76,23 @@
     }
   }
 
-  function ThingRow (props) {
+  function Row (props) {
     return html`
-      <tr class="border border-solid-black">
-        <td class="border border-solid-black">${props.label}</td>
-        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${50} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${5} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/7} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td class="border border-solid-black"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/30.5}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td class="border border-solid-black hidden md:table-cell"><${RawLimit} timeSaved=${Number(props.count)} frequency=${1/365}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+      <tr>
+        <td>${props.label}</td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${50} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${5} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/7} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/30.5}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/365}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
       </tr>
     `
   }
 
   function Table (props) {
     return html`
-      <table class="border border-solid-black bg-white mt-4 w-full md:w-6/12">
+      <table>
         <thead>
           <th>   </th>
           <th>50/Day</th>
@@ -102,27 +100,23 @@
           <th>Daily</th>
           <th>Weekly</th>
           <th>Monthly</th>
-          <th class="hidden md:table-cell">Yearly</th>
+          <th>Yearly</th>
         </thead>
         <tbody>
-          <${ThingRow} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="5 seconds" count="5" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="30 seconds" count="30" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="1 minute" count="60" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="5 minutes" count="150" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="30 minutes" count="1800" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="1 hour" count="3600" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="6 hours" count="21600" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="1 day" count="86400" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${ThingRow} label="1 week" count="604800" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="5 seconds" count="5" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="30 seconds" count="30" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 minute" count="60" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="5 minutes" count="150" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="30 minutes" count="1800" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 hour" count="3600" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="6 hours" count="21600" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 day" count="86400" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 week" count="604800" days=${props.days} peopleAffected=${props.peopleAffected}/>
         </tbody>
       </table>
 
     `
-  }
-
-  function Whoa (props) {
-    return html`<div class="bg-blue-200">Hello ${props.name}</div>`;
   }
 
   function Main (props) {
@@ -140,8 +134,8 @@
 
     return html`
     <div>
-      <${Table} peopleAffected=${peopleAffected} days=${days} />
       <${Form} updateTimeInterval=${updateTimeInterval} days=${days} updatePeopleAffected=${updatePeopleAffected} peopleAffected=${peopleAffected} />
+      <${Table} peopleAffected=${peopleAffected} days=${days} />
     </div>
     `;
 
