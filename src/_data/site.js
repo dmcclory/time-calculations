@@ -1,10 +1,10 @@
 module.exports = {
-  "title": "Eleventy Web Starter",
-  "description": "Minimal boilerplate for new projects built with Eleventy, Tailwind, PurgeCSS and PostCSS",
-  "url": "https://eleventywebstarter.netlify.app",
-  "author": "Chris Collins",
+  "title": "TimeCalculations.net",
+	"description": "A site for figuring out if it's worth the time to speed things up.",
+  "url": "https://timecalculations.net",
+  "author": "Dan McClory",
   "meta_data": {
-    "twitter": "@scottishstoater",
+    "twitter": "@mcclory",
     "opengraph_default": "/static/opengraph-default.jpg"
   },
   "env": process.env.ELEVENTY_ENV === 'production'
