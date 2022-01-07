@@ -1,26 +1,35 @@
 :root {
-  --active-brightness: 0.85;
-  --border-radius: 5px;
-  --box-shadow: 2px 2px 10px;
+	--active-brightness: 0.85;
+	--border-radius: 5px;
+	--box-shadow: 2px 2px 10px;
 }
 
 nav {
-  margin-bottom: unset;
+	margin-bottom: unset;
 }
 
 section aside {
-   width: var(--width-card-wide);
+	width: var(--width-card-wide);
 }
 
+footer {
+	background-color: var(--color-secondary-accent);
+	color: var(--color-text-secondary);
+	margin: 0px;
+	/* padding: 0px; */
+	/* margin-right: unset; */
+	max-width: 100%;
+	width: 100% !important;
+}
 
 @media (max-width: 600px) {
-  header {
-    padding: 0rem 1rem;
-  }
+	header {
+		padding: 0rem 1rem;
+	}
 
-  section.app-area {
-    display: block;
-    flex-wrap: unset;
-    justify-content: unset;
-  }
+	section.app-area {
+		display: block;
+		flex-wrap: unset;
+		justify-content: unset;
+	}
 }
