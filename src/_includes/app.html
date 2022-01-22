@@ -19,6 +19,9 @@
   ]
   const monthInDays = (m) => (m * 30.5)
 
+  const secondsInHour = 3600
+  const secondsInMinute = 60
+
   function Form (props) {
     const options = inputDurations.map((o, i) => (
       html`<option value=${i}>${o.label}</option>`
@@ -36,12 +39,41 @@
         <input style="width: 50%;" value=${props.peopleAffected} type="range" min="1" max="30" step="1" onChange=${props.updatePeopleAffected} />
         <input style="width: 50%;" type="number" name="peopleAffected" value=${props.peopleAffected} min="1" onChange=${props.updatePeopleAffected} />
       </div>
+      <label>day duration: </label>
+      <div style="display: flex; flex-direction: row; width: 100%">
+        <div style="width: 50%">
+          <input
+            type="radio"
+            id="8hours"
+            name="dayduration"
+            value="8"
+            onChange=${props.updateDayDuration}
+            checked=${props.dayDuration === 8}
+            />
+          <label for="8hours">business days</label>
+        </div>
+        <div style="width: 50%">
+          <input
+            type="radio"
+            id="24hours"
+            name="dayduration"
+            value="24"
+            onChange=${props.updateDayDuration}
+            checked=${props.dayDuration === 24}
+          />
+          <label for="24hours">24 hour day</label>
+        </div>
+      </div>
     `
   }
 
   function Cell(props) {
     const threshold = (props.frequency * props.timePeriodInDays) * props.timeSaved * props.peopleAffected;
-    const {duration, large, small} = roundToLargestTimeUnit(threshold, props.timePeriodInDays * 86400 * props.peopleAffected)
+    const {duration, large, small} = roundToLargestTimeUnit(
+      threshold,
+      props.timePeriodInDays * (secondsInHour * props.dayDuration) * props.peopleAffected,
+      props.dayDuration
+    )
 
     return html`
       <div>
@@ -59,30 +91,31 @@
       months: {large: "months", small: "M"}
   }
 
-  function roundToLargestTimeUnit(duration, timePeriodInSeconds) {
+
+  function roundToLargestTimeUnit(duration, timePeriodInSeconds, dayDuration) {
     if (Math.abs(timePeriodInSeconds - duration) < 0.01) {
       return {duration: "=="}
     }
     if (timePeriodInSeconds < duration) {
       return {duration: "N/A"}
     }
-    if (duration < 60) {
+    if (duration < secondsInMinute) {
       return {duration: duration.toFixed(1), ...timeCellLabels.seconds}
     }
-    else if (duration <= 3600) {
-      return {duration: (duration/60).toFixed(1), ...timeCellLabels.minutes}
+    else if (duration <= secondsInHour) {
+      return {duration: (duration/secondsInMinute).toFixed(1), ...timeCellLabels.minutes}
     }
-    else if (duration <= 86400 ) {
-      return {duration: (duration/3600).toFixed(1), ...timeCellLabels.hours}
+    else if (duration <= secondsInHour * dayDuration ) {
+      return {duration: (duration/secondsInHour).toFixed(1), ...timeCellLabels.hours}
     }
-    else if (duration <= 604800 ) {
-      return {duration: (duration/86400).toFixed(1), ...timeCellLabels.days}
+    else if (duration <= secondsInHour * dayDuration * 7 ) {
+      return {duration: (duration/(secondsInHour * dayDuration)).toFixed(1), ...timeCellLabels.days}
     }
-    else if (duration <= 2635200) {
-      return {duration: (duration/604800).toFixed(1), ...timeCellLabels.weeks}
+    else if (duration <= secondsInHour * dayDuration * 30.5) {
+      return {duration: (duration/(secondsInHour * dayDuration * 7)).toFixed(1), ...timeCellLabels.weeks}
     }
     else {
-      return {duration: (duration/2635200).toFixed(1), ...timeCellLabels.months}
+      return {duration: (duration/(secondsInHour * dayDuration * 30.5)).toFixed(1), ...timeCellLabels.months}
     }
   }
 
@@ -90,12 +123,12 @@
     return html`
       <tr>
         <td>${props.label}</td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${50} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${5} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/7} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/30.5}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
-        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/365}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${50} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${5} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/7} timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/30.5}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
+        <td><${Cell} timeSaved=${Number(props.count)} frequency=${1/365}  timePeriodInDays=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} /></td>
       </tr>
     `
   }
@@ -113,16 +146,16 @@
           <th>Yearly</th>
         </thead>
         <tbody>
-          <${Row} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="5 seconds" count="5" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="30 seconds" count="30" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="1 minute" count="60" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="5 minutes" count="150" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="30 minutes" count="1800" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="1 hour" count="3600" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="6 hours" count="21600" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="1 day" count="86400" days=${props.days} peopleAffected=${props.peopleAffected}/>
-          <${Row} label="1 week" count="604800" days=${props.days} peopleAffected=${props.peopleAffected}/>
+          <${Row} label="1 second" count="1" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="5 seconds" count="5" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="30 seconds" count="30" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="1 minute" count="60" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="5 minutes" count="150" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="30 minutes" count="1800" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="1 hour" count="3600" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="6 hours" count="21600" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="1 day" count="${secondsInHour * props.dayDuration}" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
+          <${Row} label="1 week" count="${secondsInHour * props.dayDuration * 7}" days=${props.days} peopleAffected=${props.peopleAffected} dayDuration=${props.dayDuration} />
         </tbody>
       </table>
 
@@ -132,6 +165,7 @@
   function Main (props) {
     const [ activeDuration, setActiveDuration ] = useState(1)
     const [ peopleAffected, setPeopleAffected ] = useState(1)
+    const [ dayDuration, setDayDuration ] = useState(8)
 
     const days = monthInDays(inputDurations[activeDuration].duration)
 
@@ -143,6 +177,10 @@
       setActiveDuration(e.target.value)
     }, [activeDuration, setActiveDuration])
 
+    const updateDayDuration = useCallback( (e) => {
+      setDayDuration(Number(e.target.value))
+    }, [dayDuration, setDayDuration])
+
     return html`
     <div>
       <${Form}
@@ -150,8 +188,14 @@
         activeDuration=${activeDuration}
         updatePeopleAffected=${updatePeopleAffected}
         peopleAffected=${peopleAffected}
+        dayDuration=${dayDuration}
+        updateDayDuration=${updateDayDuration}
       />
-      <${Table} peopleAffected=${peopleAffected} days=${days} />
+      <${Table}
+        peopleAffected=${peopleAffected}
+        days=${days}
+        dayDuration=${dayDuration}
+      />
     </div>
     `;
 
